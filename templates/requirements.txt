@@ -1,0 +1,5 @@
+flask
+openai-whisper
+pydub
+ffmpeg-python
+deepmultilingualpunctuation

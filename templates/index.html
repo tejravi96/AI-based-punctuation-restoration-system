@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>AI Punctuation & Grammar Platform</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700;800&display=swap" rel="stylesheet">
+
+<style>
+* { box-sizing:border-box; margin:0; padding:0; }
+
+body {
+    font-family:'Poppins',sans-serif;
+    background:linear-gradient(-45deg,#667eea,#764ba2,#ff6ec4,#42e695);
+    background-size:400% 400%;
+    animation:gradientBG 12s ease infinite;
+    color:white;
+    overflow-x:hidden;
+}
+
+@keyframes gradientBG {
+    0%  { background-position:0%   50%; }
+    50% { background-position:100% 50%; }
+    100%{ background-position:0%   50%; }
+}
+
+.navbar { display:flex; align-items:center; padding:20px 60px; }
+.scroll-container { width:100%; overflow:hidden; }
+.scroll-text {
+    display:inline-block; white-space:nowrap;
+    font-size:22px; font-weight:700;
+    animation:scrollText 30s linear infinite;
+}
+@keyframes scrollText {
+    0%  { transform:translateX(-100%); }
+    100%{ transform:translateX(100%);  }
+}
+
+.hero {
+    display:flex; justify-content:space-between;
+    align-items:center; padding:80px 60px; gap:40px;
+}
+.hero-text { max-width:600px; }
+.hero-text h1 { font-size:60px; font-weight:800; margin-bottom:20px; }
+.hero-text p  { font-size:18px; opacity:.9; margin-bottom:30px; }
+.hero-image img { width:100%; border-radius:20px; }
+
+.section {
+    background:white; color:#333;
+    padding:80px 60px;
+    border-top-left-radius:40px; border-top-right-radius:40px;
+}
+
+.card {
+    background:#f5f7fa; padding:30px;
+    border-radius:20px; max-width:900px; margin:20px auto;
+}
+
+textarea {
+    width:100%; height:120px;
+    border-radius:10px;
+    padding:10px;
+    font-size:14px;
+    border:1px solid #ddd;
+    resize:vertical;
+}
+
+.process-btn {
+    margin-top:20px;
+    padding:10px 25px;
+    border:none;
+    border-radius:30px;
+    background:#667eea;
+    color:white;
+    cursor:pointer;
+}
+
+.output-box {
+    margin-top:20px;
+    background:white;
+    padding:15px 18px;
+    border-radius:10px;
+    border:1px solid #e0e0e0;
+}
+
+.language-box {
+    margin-top:15px;
+    padding:12px 15px;
+    background:#e3f2fd;
+    border-radius:8px;
+}
+
+.metric-box {
+    margin-top:20px;
+    padding:22px 25px;
+    background:#f0f4ff;
+    border-radius:14px;
+}
+
+.metric-grid {
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:14px;
+}
+
+.metric-item {
+    background:white;
+    border-radius:12px;
+    padding:16px;
+    border:1px solid #e2e8f5;
+}
+
+.metric-label {
+    font-size:12px;
+    color:#888;
+}
+
+.metric-value {
+    font-size:26px;
+    font-weight:800;
+}
+
+.good { color:#27ae60; }
+.warn { color:#e67e22; }
+.bad  { color:#e74c3c; }
+
+footer {
+    text-align:center;
+    padding:30px;
+    background:#333;
+    color:white;
+}
+</style>
+</head>
+
+<body>
+
+<div class="navbar">
+  <div class="scroll-container">
+    <div class="scroll-text">
+      Punctuation & Restoration System using Transformers Based Models Under The Guidance of DR CHATTU KANNAIH &nbsp;&nbsp;&nbsp;
+      Punctuation & Restoration System using Transformers Based Models Under The Guidance of DR CHATTU KANNAIH
+    </div>
+  </div>
+</div>
+
+<div class="hero">
+  <div class="hero-text">
+    <h1>Smart Speech.<br>Perfect Punctuation.</h1>
+    <p>AI-powered system that restores punctuation from speech or raw text.</p>
+  </div>
+  <div class="hero-image">
+    <img src="https://i.ytimg.com/vi/HvOi97M-Gqg/maxresdefault.jpg">
+  </div>
+</div>
+
+<div class="section">
+<div class="card">
+
+<form method="POST" enctype="multipart/form-data">
+<h3>Upload Audio</h3>
+<input type="file" name="audio">
+
+<h3>OR Enter Text</h3>
+<textarea name="manual_text"></textarea>
+
+<button class="process-btn">Process</button>
+</form>
+
+{% if audio_file %}
+<div class="output-box">
+<b>Audio Playback:</b><br>
+<audio controls style="width:100%;">
+    <source src="{{ url_for('static', filename='uploads/' + audio_file) }}">
+</audio>
+</div>
+{% endif %}
+
+{% if detected_language %}
+<div class="language-box">
+🌍 Detected Language: {{ detected_language }}
+</div>
+{% endif %}
+
+{% if raw_text %}
+<div class="output-box">
+<b>Raw Text:</b><br>{{ raw_text }}
+</div>
+{% endif %}
+
+{% if final_text %}
+<div class="output-box">
+<b>Enhanced Text:</b><br>{{ final_text }}
+</div>
+{% endif %}
+
+<!-- METRICS -->
+{% if bleu_score is not none %}
+<div class="metric-box">
+
+<div class="metric-grid">
+
+<div class="metric-item">
+<span class="metric-label">BLEU Score</span>
+<span class="metric-value {% if bleu_score >= 0.8 %}good{% elif bleu_score >= 0.5 %}warn{% else %}bad{% endif %}">
+{{ bleu_score }}
+</span>
+</div>
+
+<div class="metric-item">
+<span class="metric-label">Readability</span>
+<span class="metric-value {% if readability_score >= 60 %}good{% elif readability_score >= 30 %}warn{% else %}bad{% endif %}">
+{{ readability_score }}
+</span>
+</div>
+
+<div class="metric-item">
+<span class="metric-label">Sentences</span>
+<span class="metric-value">
+{{ sentence_count }}
+</span>
+</div>
+
+<div class="metric-item">
+<span class="metric-label">Word Count</span>
+<span class="metric-value">
+{{ word_count }}
+</span>
+</div>
+
+</div>
+
+<p style="margin-top:10px;">
+⏱ Processing Time: {{ processing_time }} sec
+</p>
+
+</div>
+{% endif %}
+
+{% if final_text %}
+<a href="/download">
+<button class="process-btn">Download Report</button>
+</a>
+{% endif %}
+
+</div>
+</div>
+
+<footer>
+Done by A N Raviteja & D Vamsi
+</footer>
+
+</body>
+</html>

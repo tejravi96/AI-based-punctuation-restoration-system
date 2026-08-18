@@ -1,0 +1,12 @@
+Detected Language: English
+
+RAW TEXT:
+hi how are you
+
+FINAL OUTPUT:
+Hi, how are you?
+
+BLEU Score: 0.5699
+Readability Score: 100
+Sentence Count: 1
+Word Count: 4
